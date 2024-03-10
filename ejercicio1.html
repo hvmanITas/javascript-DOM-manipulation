@@ -47,12 +47,14 @@
       </div>
     </div>
     <script>
+      // Form elements
       const form = document.getElementById("formulario");
       const result = document.querySelector(".resultado");
       const pattern = /[a-zA-Z]/gim;
       const errorAlert =
         "<p class='fst-italic text-red'>Por favor ingrese caracteres alfabéticos de la 'a' a la 'z'</p>";
 
+      // Form submission
       form.addEventListener("submit", (event) => {
         event.preventDefault();
 
@@ -85,6 +87,7 @@
           success.error.innerHTML = "";
         });
 
+        // Success message
         if (successful.length === validations.length) {
           result.innerHTML = "<p class='fst-italic text-green'>Mensaje enviado con éxito</p>"
         };

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <!-- Metadata -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Escríbenos mediante este formulario.">
+    <meta name="keywords" content="formularios, forms">
+    <title>Escríbenos!</title>
+    <link rel="shortcut icon" href="assets/img/form-favicon.png" type="image/png">
+    <!-- Google Fonts: Open Sans Font Family -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300..800&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5.3.2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- CSS -->
+    <link href="assets/css/style.css" type="text/css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="mx-auto pt-5">
+      <div>
+        <h1 class="my-4">Escríbenos!</h1>
+        <div class="resultado fst-italic text-green"></div>
+        <form id="formulario">
+          <div>
+            <div class="d-flex flex-column col-8 col-sm-5 col-md-4 col-lg-3 col-xl-2 row-gap-3 mx-auto">
+              <label>Nombre completo</label>
+              <input class="form-control" id="nombre" type="text" required>
+              <p class="errorNombre fst-italic text-red"></p>
+            </div>
+            <div class="d-flex flex-column col-8 col-sm-5 col-md-4 col-lg-3 col-xl-2 row-gap-3 mx-auto">
+              <label>Asunto</label>
+              <input class="form-control" id="asunto" type="text" required>
+              <p class="errorAsunto fst-italic text-red"></p>
+            </div>
+          </div>
+          <div class="d-flex flex-column col-8 col-sm-5 col-md-4 col-lg-3 col-xl-2 row-gap-3 mx-auto">
+            <label>Mensaje</label>
+            <textarea class="form-control" id="mensaje" required></textarea>
+            <p class="errorMensaje fst-italic text-red"></p>
+          </div>
+          <div class="row-gap-3">
+            <button class="btn btn-success" id="boton" type="submit">Enviar mensaje</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script>
+      const form = document.getElementById("formulario");
+      const result = document.querySelector(".resultado");
+      const pattern = /[a-zA-Z]/gim;
+      const errorAlert =
+        "<p class='fst-italic text-red'>Por favor ingrese caracteres alfabéticos de la 'a' a la 'z'</p>";
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        // Core validation objects
+        class Validation {
+          constructor(input, error) {
+            this.input = input;
+            this.error = error;
+          }
+        }
+        let name = new Validation(document.getElementById("nombre").value, document.querySelector(".errorNombre"));
+        let subject = new Validation(document.getElementById("asunto").value, document.querySelector(".errorAsunto"));
+        let message = new Validation(document.getElementById("mensaje").value, document.querySelector(".errorMensaje"));
+        const validations = [name, subject, message];
+
+        // Test filters
+        const successful = validations.filter(function (validation) {
+          return pattern.test(validation.input) === true;
+        });
+        const failed = validations.filter(function (validation) {
+          return pattern.test(validation.input) === false;
+        });
+
+        // Render required alerts
+        failed.forEach(function (fail) {
+          fail.error.innerHTML = errorAlert;
+        });
+        // Clean unrequired alerts
+        successful.forEach(function (success) {
+          success.error.innerHTML = "";
+        });
+
+        if (successful.length === validations.length) {
+          result.innerHTML = "<p class='fst-italic text-green'>Mensaje enviado con éxito</p>"
+        };
+      });
+    </script>
+  </body>
+</html>
